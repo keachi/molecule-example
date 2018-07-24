@@ -1,0 +1,18 @@
+---
+
+- name: Create
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  no_log: "{{ not (lookup('env', 'MOLECULE_DEBUG') | bool or molecule_yml.provisioner.log|default(false) | bool) }}"
+  tasks:
+    - name: Create molecule instance(s)
+      lxc_container:
+        name: "{{ item.name }}"
+        container_log: true
+        template: rhel
+        state: started
+        container_command: |
+          until ping -c1 google.com &>/dev/null; do :; done
+          yum update -y
+      with_items: "{{ molecule_yml.platforms }}"

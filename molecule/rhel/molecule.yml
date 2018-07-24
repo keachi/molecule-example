@@ -1,0 +1,27 @@
+---
+
+driver:
+  name: lxc
+
+lint:
+  name: yamllint
+  options:
+    config-file: molecule/resources/.yamllint
+
+platforms:
+  - name: testing
+
+provisioner:
+  name: ansible
+  playbooks:
+    create: ../resources/playbooks/create.yml
+    converge: ../../site.yml
+    destroy: ../resources/playbooks/destroy.yml
+  lint:
+    name: ansible-lint
+
+verifier:
+  name: testinfra
+  directory: ../resources/tests
+  lint:
+    name: flake8
