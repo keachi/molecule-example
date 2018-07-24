@@ -1,0 +1,8 @@
+# .gitignore
+
+# system
+*.swp
+*~
+
+# python
+*.pyc
